@@ -88,7 +88,7 @@ class DiscogsService
             ->first(fn($value, $key) =>
                 // type is release and release name is matching searched text
                 $value['type'] === 'release' &&
-                (str_contains($songTitle, $value['title']) || similar_song($songTitle, $value['title']) >= 50)
+                (str_contains($songTitle, $value['title']) || similar_song($songTitle, $value['title']) >= 30)
             );
 
         if (!$result) {
