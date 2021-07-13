@@ -38,5 +38,8 @@ Feel free to commit whatever you think is best, without breaking the compatibili
 
     docker-compose build
     docker-compose up -d
-
+    docker-compose exec php composer install
+    docker-compose exec php bin/console doctrine:database:create
+    docker-compose exec php bin/console doctrine:mig:migrate
+    
 And there you go.
