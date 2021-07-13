@@ -112,8 +112,8 @@ class DatasourceController extends AbstractController
     {
         $result = $repository->findBy([], ['id' => 'DESC'], self::LIMIT);
 
-        $uppercase = fn (string $value) => $request->get('uppercase') ?
-            mb_strtoupper($value, 'UTF-8') : $value;
+        $uppercase = fn ($value) => $request->get('uppercase') ?
+            mb_strtoupper((string)$value, 'UTF-8') : (string)$value;
 
         return $this->json(collect($result)
         ->map(fn (SongData $entity) => [
