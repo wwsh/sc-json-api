@@ -29,7 +29,7 @@ class DatasourceController extends AbstractController
         }
 
         return $this->json([
-            'result' => $title
+            ['result' => $title]
         ]);
     }
 
@@ -45,7 +45,7 @@ class DatasourceController extends AbstractController
         }
 
         return $this->json([
-            'result' => $artist
+            ['result' => $artist]
         ]);
     }
 
@@ -57,7 +57,7 @@ class DatasourceController extends AbstractController
         $year = $current?->getYear() ?: self::EMPTY_YEAR;
 
         return $this->json([
-            'year' => $year
+            ['result' => $year]
         ]);
     }
 
@@ -73,7 +73,7 @@ class DatasourceController extends AbstractController
         }
 
         return $this->json([
-            'label' => $result
+            ['result' => $result]
         ]);
     }
 
@@ -85,7 +85,7 @@ class DatasourceController extends AbstractController
         $result = $current?->getCatno() ?: self::EMPTY_CATNO;
 
         return $this->json([
-            'result' => $result
+            ['result' => $result]
         ]);
     }
 
@@ -102,7 +102,7 @@ class DatasourceController extends AbstractController
         );
 
         return $this->json([
-            'result' => $result
+            ['result' => $result]
         ]);
     }
 
