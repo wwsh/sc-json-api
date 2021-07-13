@@ -16,6 +16,7 @@ class DatasourceController extends AbstractController
     private const EMPTY_YEAR = '199X';
     private const EMPTY_LABEL = '-';
     private const EMPTY_CATNO = 'NONE';
+    private const LIMIT = 100;
 
     #[Route('/get/title', name: 'get_title')]
     public function title(SongDataRepository $repository, Request $request): Response
@@ -107,17 +108,20 @@ class DatasourceController extends AbstractController
     }
 
     #[Route('/get/history', name: 'get_history')]
-    public function history(SongDataRepository $repository): Response
+    public function history(SongDataRepository $repository, Request $request): Response
     {
-        $result = $repository->findBy([], ['id' => 'DESC']);
+        $result = $repository->findBy([], ['id' => 'DESC'], self::LIMIT);
+
+        $uppercase = fn (string $value) => $request->get('uppercase') ?
+            mb_strtoupper($value, 'UTF-8') : $value;
 
         return $this->json(collect($result)
         ->map(fn (SongData $entity) => [
-            'artist' => $entity->getArtist(),
-            'title' => $entity->getTitle(),
+            'artist' => $uppercase($entity->getArtist()),
+            'title' => $uppercase($entity->getTitle()),
             'year' => $entity->getYear(),
             'catno' => $entity->getCatno(),
-            'label' => $entity->getLabel(),
+            'label' => $uppercase($entity->getLabel()),
             'created' => $entity->getCreated(),
             ])
         ->all());
