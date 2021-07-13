@@ -1,0 +1,43 @@
+services:
+  shoutcast:
+    image: vimagick/shoutcast
+    ports:
+      - ${SHOUTCAST_PORT}:8000
+      - ${SHOUTCAST_PORT_2}:8001
+    volumes:
+      - ./docker/shoutcast/sc_serv.conf:/opt/shoutcast/sc_serv.conf
+    restart: always
+    container_name: shoutcast
+
+  php:
+    build: docker/php
+    volumes:
+      - .:/app:cached
+    working_dir: /app
+    container_name: php
+
+  nginx:
+    image: nginx:1.15.0
+    ports:
+      - 127.0.0.1:${NGINX_PORT}:80
+    volumes:
+      - .:/app:cached
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
+    container_name: nginx
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    ports:
+      - 127.0.0.1:${MYSQL_PORT}:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DB_NAME: ${MYSQL_DB_NAME}
+    container_name: mysql
+
+  callback:
+    build: ./docker/callback
+    depends_on:
+      - nginx
+    container_name: callback
