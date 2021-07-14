@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\SongData;
+use App\Repository\ShoutDataRepository;
 use App\Repository\SongDataRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class DatasourceController extends AbstractController
 {
@@ -110,10 +112,10 @@ class DatasourceController extends AbstractController
     #[Route('/get/history', name: 'get_history')]
     public function history(SongDataRepository $repository, Request $request): Response
     {
-        $result = $repository->findBy([], ['id' => 'DESC'], self::LIMIT);
+        $result = $repository->findBy([], ['updated' => 'DESC'], self::LIMIT);
 
         $uppercase = fn ($value) => $request->get('uppercase') ?
-            mb_strtoupper((string)$value, 'UTF-8') : (string)$value;
+            mb_strtoupper((string) $value, 'UTF-8') : (string) $value;
 
         return $this->json(collect($result)
         ->map(fn (SongData $entity) => [
@@ -123,7 +125,25 @@ class DatasourceController extends AbstractController
             'catno' => $entity->getCatno(),
             'label' => $uppercase($entity->getLabel()),
             'created' => $entity->getCreated(),
+            'updated' => $entity->getUpdated(),
             ])
         ->all());
+    }
+
+    #[Route('/get/debug', name: 'get_debug')]
+    public function debug(ShoutDataRepository $repository): Response
+    {
+        $result = $repository->findOneBy([], ['id' => 'DESC']);
+
+        $data = (new ObjectNormalizer)->normalize(
+            $result,
+            null,
+            ['attributes' => get_object_vars($result)]
+        );
+
+        return $this->json([
+            'dataset' => 'last SHOUTcast xml',
+            'data' => $data
+        ]);
     }
 }

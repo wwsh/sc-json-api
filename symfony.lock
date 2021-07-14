@@ -257,6 +257,12 @@
     "symfony/polyfill-php81": {
         "version": "v1.23.0"
     },
+    "symfony/property-access": {
+        "version": "v5.3.0"
+    },
+    "symfony/property-info": {
+        "version": "v5.3.1"
+    },
     "symfony/proxy-manager-bridge": {
         "version": "v5.3.0"
     },
@@ -275,6 +281,9 @@
     },
     "symfony/runtime": {
         "version": "v5.3.3"
+    },
+    "symfony/serializer": {
+        "version": "v5.3.2"
     },
     "symfony/service-contracts": {
         "version": "v2.4.0"

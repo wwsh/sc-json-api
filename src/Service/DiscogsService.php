@@ -44,6 +44,10 @@ class DiscogsService
 
         $checksum = md5($songTitle);
         if ($song = $this->repository->findOneBy(['checksum' => $checksum])) {
+            $song->setUpdated(new \DateTime());
+            $this->manager->persist($song);
+            $this->manager->flush();
+
             return $song;
         } else {
             $response = $client->search(['q' => $songTitle, 'type' => 'release']);
@@ -62,7 +66,6 @@ class DiscogsService
             $song->setArtist($artist);
             $song->setTitle($title);
             $song->setChecksum($checksum);
-            $song->setCreated(new \DateTime());
             $song->setRawSongtitle($songTitle);
         } else {
             $song->setArtist($matching['artist']);
@@ -70,7 +73,6 @@ class DiscogsService
             $song->setYear($matching['year'] ?? null);
             $song->setLabel($matching['label'] ?? '');
             $song->setChecksum($checksum);
-            $song->setCreated(new \DateTime());
             $song->setMesh(json_encode($results));
             $song->setRawSongtitle($songTitle);
             $song->setCatno($matching['catno'] ?? '');

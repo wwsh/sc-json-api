@@ -2,18 +2,21 @@
 
 namespace App\Controller;
 
-use App\Provider\ShoutcastDataProvider;
 use App\Service\DiscogsService;
 use App\Service\GCService;
+use App\Source\Source;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CallbackController extends AbstractController
 {
+    public function __construct(
+        private Source $dataSource
+    ) {}
+
     #[Route('/callback', name: 'callback')]
     public function index(
-        ShoutcastDataProvider $provider,
         DiscogsService $discogsService,
         GCService $garbageService
     ): Response {
@@ -22,7 +25,7 @@ class CallbackController extends AbstractController
         $garbageService->execute();
 
         try {
-            $songTitle = $provider->retrieve();
+            $songTitle = $this->dataSource->retrieve();
             if (!$songTitle) {
                 $message = 'No incoming data';
             }

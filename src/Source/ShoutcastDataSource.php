@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Provider;
+namespace App\Source;
 
 use App\Entity\ShoutData;
 use App\Repository\ShoutDataRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ShoutcastDataProvider
+class ShoutcastDataSource implements Source
 {
     private string $statsUrl;
     private ShoutDataRepository $repository;

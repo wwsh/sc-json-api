@@ -7,7 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SongDataRepository::class)
- * @ORM\Table(indexes={@ORM\Index(name="checksum_idx", fields={"checksum"})})
+ * @ORM\Table(indexes={
+ *     @ORM\Index(name="checksum_idx", fields={"checksum"}),
+ *     @ORM\Index(name="updated_idx", fields={"updated"})
+ *     })
+ * })
  */
 class SongData
 {
@@ -68,6 +72,16 @@ class SongData
      * @ORM\OneToMany(targetEntity="App\Entity\SongComment", mappedBy="song")
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated;
+
+    public function __construct()
+    {
+        $this->created = $this->updated = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -196,5 +210,17 @@ class SongData
     public function setComments(array $comments): void
     {
         $this->comments = $comments;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(\DateTimeInterface $updated): self
+    {
+        $this->updated = $updated;
+
+        return $this;
     }
 }
