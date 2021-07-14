@@ -70,7 +70,7 @@ class DiscogsService
             $song->setTitle($title);
             $song->setChecksum($checksum);
             $song->setRawSongtitle($songTitle);
-            $song->setMesh(json_encode($results));
+            $song->setMesh(json_encode($response));
         } else {
             $song->setArtist($matching['artist']);
             $song->setTitle($matching['title']);
