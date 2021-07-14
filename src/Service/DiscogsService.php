@@ -50,7 +50,10 @@ class DiscogsService
 
             return $song;
         } else {
-            $response = $client->search(['q' => $songTitle, 'type' => 'release']);
+            $response = $client->search([
+                'q' => rawurlencode($songTitle),
+                'type' => 'release',
+            ]);
         }
 
         $results = $response['results'] ?? [];
