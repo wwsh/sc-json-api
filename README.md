@@ -26,6 +26,8 @@ You will need to configure the `.env`
 
 Get a Discogs token from your Discogs settings.
 
+Install `scjsonapi.localhost` as a local domain in your environment.
+
 ## Code
 
 Take a look at the code to find out what's more in the box.
