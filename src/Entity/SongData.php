@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SongDataRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -199,7 +200,7 @@ class SongData
     /**
      * @return SongComment[]
      */
-    public function getComments(): ?array
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
@@ -207,7 +208,7 @@ class SongData
     /**
      * @param SongComment[] $comments
      */
-    public function setComments(array $comments): void
+    public function setComments($comments): void
     {
         $this->comments = $comments;
     }
