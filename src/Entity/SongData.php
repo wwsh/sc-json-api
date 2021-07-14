@@ -80,7 +80,7 @@ class SongData
     private $updated;
 
     /**
-     * @ORM\Column(type="string", length=3, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $country;
 
