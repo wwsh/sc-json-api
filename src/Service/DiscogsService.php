@@ -129,6 +129,10 @@ class DiscogsService
             return ['', $songTitle]; // return at least a title
         }
 
+        if (count($result) > 2) {
+            return [$result[0], implode(array_slice($result, 1))];
+        }
+
         return [$result[0], $result[1]];
     }
 
