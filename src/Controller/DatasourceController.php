@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DatasourceController extends AbstractController
 {
@@ -131,19 +132,38 @@ class DatasourceController extends AbstractController
     }
 
     #[Route('/get/debug', name: 'get_debug')]
-    public function debug(ShoutDataRepository $repository): Response
-    {
+    public function debug(
+        ShoutDataRepository $repository,
+        SongDataRepository $songDataRepository
+    ): Response {
         $result = $repository->findOneBy([], ['id' => 'DESC']);
 
-        $data = (new ObjectNormalizer)->normalize(
-            $result,
-            null,
-            ['attributes' => get_object_vars($result)]
-        );
+        if (!$result) {
+            return $this->json([]);
+        }
+
+        $data = $result;
+
+        $result = $songDataRepository->findOneBy([], ['updated' => 'DESC']);
+
+        if (!$result) {
+            return $this->json([
+                [
+                    'caption' => 'last SHOUTcast xml',
+                    'data' => $data,
+                ],
+            ]);
+        }
 
         return $this->json([
-            'dataset' => 'last SHOUTcast xml',
-            'data' => $data
+            [
+                'caption' => 'last SHOUTcast xml',
+                'data' => $data,
+            ],
+            [
+                'caption' => 'last response',
+                'data' => $result,
+            ],
         ]);
     }
 }

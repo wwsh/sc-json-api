@@ -88,9 +88,13 @@ class DiscogsService
     {
         $result = collect($results)
             ->first(fn($value, $key) =>
-                // type is release and release name is matching searched text
+                // type is release
                 $value['type'] === 'release' &&
-                (str_contains($songTitle, $value['title']) || similar_song($songTitle, $value['title']) >= 30)
+                // not V.A. comps
+                !preg_match('/^Various\s/', $value['title']) &&
+                // release name is matching searched text
+                (str_contains($songTitle, $value['title']) ||
+                    similar_song($songTitle, $value['title']) >= 30)
             );
 
         if (!$result) {
