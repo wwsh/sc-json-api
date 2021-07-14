@@ -79,6 +79,11 @@ class SongData
      */
     private $updated;
 
+    /**
+     * @ORM\Column(type="string", length=3, nullable=true)
+     */
+    private $country;
+
     public function __construct()
     {
         $this->created = $this->updated = new \DateTime();
@@ -221,6 +226,18 @@ class SongData
     public function setUpdated(\DateTimeInterface $updated): self
     {
         $this->updated = $updated;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

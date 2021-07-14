@@ -76,6 +76,7 @@ class DiscogsService
             $song->setMesh(json_encode($results));
             $song->setRawSongtitle($songTitle);
             $song->setCatno($matching['catno'] ?? '');
+            $song->setCountry($matching['country'] ?? '');
         }
 
         $this->manager->persist($song);
