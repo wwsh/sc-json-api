@@ -99,7 +99,7 @@ class DiscogsService
                 !preg_match('/^Various\s/', $value['title']) &&
                 // release name is matching searched text
                 (str_contains($songTitle, $this->cleanupString($value['title'])) ||
-                    similar_song($songTitle, $this->cleanupString($value['title'])) >= 30)
+                    similar_song($songTitle, $this->cleanupString($value['title'])) >= 10)
             );
 
         if (!$result) {
