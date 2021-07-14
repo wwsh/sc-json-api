@@ -134,7 +134,7 @@ class DiscogsService
 
     private function cleanupString(string $string): string
     {
-        $string = preg_replace('/\([0-9]+\)/', '', $string);
+        $string = preg_replace('/[\s]\([0-9]+\)/', '', $string);
         $string = str_replace('*', '', $string);
 
         $string = trim($string);
